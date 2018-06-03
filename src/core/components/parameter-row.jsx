@@ -154,6 +154,12 @@ export default class ParameterRow extends Component {
         paramExample = param.get("x-example")
       }
     }
+    let pattern = param.get("pattern") || '';
+    if (pattern.length > 2) {
+      // Simplify the One platform style pattern.
+      // This simplifies '^foo/[^/?]+/bar/[^/?]+$' to 'foo/*/bar/*'.
+      pattern = pattern.substr(1, pattern.length - 2).replace(/\[\^\/\?\]\+/g, "*");
+    }
 
     return (
       <tr className="parameters">
@@ -192,13 +198,13 @@ export default class ParameterRow extends Component {
           }
 
           {(isFormData && !isFormDataSupported) && <div>Error: your browser does not support FormData</div>}
-
+          
           { bodyParam || !isExecute ? null
             : <JsonSchemaForm fn={fn}
                               getComponent={getComponent}
                               value={ value }
                               required={ required }
-                              description={param.get("description") ? `${param.get("name")} - ${param.get("description")}` : `${param.get("name")}`}
+                              description={`${pattern}`}
                               onChange={ this.onChangeWrapper }
                               errors={ paramWithMeta.get("errors") }
                               schema={ schema }/>
