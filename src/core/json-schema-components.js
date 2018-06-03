@@ -72,25 +72,30 @@ export class JsonSchema_string extends Component {
 
     if ( enumValue ) {
       const Select = getComponent("Select")
-      return (<Select className={ errors.length ? "invalid" : ""}
+      return (<div className={ errors.length ? "parameter-input invalid" : "parameter-input"}>
+                <Select className={ errors.length ? "invalid" : ""}
                       title={ errors.length ? errors : ""}
                       allowedValues={ enumValue }
                       value={ value }
                       allowEmptyValue={ !required }
-                      onChange={ this.onEnumChange }/>)
+                      onChange={ this.onEnumChange }/>
+              </div>)
     }
 
     const isDisabled = schema["in"] === "formData" && !("FormData" in window)
     const Input = getComponent("Input")
     if (schema["type"] === "file") {
-      return (<Input type="file"
+      return (<div className={ errors.length ? "parameter-input invalid" : "parameter-input"}>
+                <Input type="file"
                      className={ errors.length ? "invalid" : ""}
                      title={ errors.length ? errors : ""}
                      onChange={ this.onChange }
-                     disabled={isDisabled}/>)
+                     disabled={isDisabled}/>
+              </div>)
     }
     else {
-      return (<DebounceInput
+      return (<div className={ errors.length ? "parameter-input invalid" : "parameter-input"}>
+                <DebounceInput
                      type={ schema.format === "password" ? "password" : "text" }
                      className={ errors.length ? "invalid" : ""}
                      title={ errors.length ? errors : ""}
@@ -99,7 +104,9 @@ export class JsonSchema_string extends Component {
                      debounceTimeout={350}
                      placeholder={description}
                      onChange={ this.onChange }
-                     disabled={isDisabled}/>)
+                     disabled={isDisabled}/>
+                <div className="error-message">{errors.length ? errors.join("\n") : ""}</div>
+              </div>)
     }
   }
 }

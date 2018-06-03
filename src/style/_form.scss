@@ -46,6 +46,13 @@ label
     @include text_headline();
 }
 
+.parameter-input .error-message {
+    white-space: pre-line;
+}
+
+.parameter-input.invalid .error-message {
+    color: $_color-delete;
+}
 
 input[type=text],
 input[type=password],
